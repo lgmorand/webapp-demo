@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "subscriptionId": {
+            "value": "d677493f-c5e8-48f1-b230-b3acdb23c4af"
+        },
+        "resourceGroupName": {
+            "value": "rg-test"
+        },
+        "name": {
+            "value": "monappliprod"
+        },
+        "location": {
+            "value": "France Central"
+        },
+        "hostingPlanName": {
+            "value": "ASP-rgtest-b023"
+        },
+        "serverFarmResourceGroup": {
+            "value": "rg-test"
+        },
+        "alwaysOn": {
+            "value": true
+        },
+        "ftpsState": {
+            "value": "FtpsOnly"
+        },
+        "sku": {
+            "value": "Premium0V3"
+        },
+        "skuCode": {
+            "value": "P0V3"
+        },
+        "numberOfWorkers": {
+            "value": "2"
+        },
+        "workerSize": {
+            "value": "18"
+        },
+        "workerSizeId": {
+            "value": "18"
+        },
+        "currentStack": {
+            "value": "dotnet"
+        },
+        "phpVersion": {
+            "value": "OFF"
+        },
+        "netFrameworkVersion": {
+            "value": "v9.0"
+        }
+    }
+}

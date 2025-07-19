@@ -1,0 +1,41 @@
+param webAppName string = uniqueString(resourceGroup().id) // Generate a unique string for the web app name
+param sku string = 'P0v3' // Tier of the App Service plan
+param linuxFxVersion string = 'PHP|8.4' // Runtime stack of the web app
+param location string = resourceGroup().location // Location for all resources
+var appServicePlanName = toLower('AppServicePlan-${webAppName}')
+var webSiteName = toLower('mywebapp-${webAppName}')
+
+resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
+  name: appServicePlanName
+  location: location
+  properties: {
+    reserved: true
+  }
+  sku: {
+    name: sku
+  }
+  kind: 'linux'
+}
+
+resource appService 'Microsoft.Web/sites@2023-12-01' = {
+  name: webSiteName
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: linuxFxVersion
+    }
+  }
+}
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2023-12-01' = {
+  parent: appService
+  name: 'staging'
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: linuxFxVersion
+    }
+  }
+}

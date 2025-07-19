@@ -1,0 +1,49 @@
+name: 1- Deploy Infra
+
+on:
+  workflow_dispatch:
+
+jobs:
+  deployInfra:
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Prod'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v4
+
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Deployment
+      uses: azure/bicep-deploy@v2
+      with:
+        type: deployment
+        operation: create
+        name: deploy
+        scope: resourceGroup
+        subscription-id: ${{ vars.SUBSCRIPTION_ID }}
+        resource-group-name: ${{ vars.RESOURCE_GROUP }}
+        template-file: ./infra/bicep/main.bicep
+        parameters-file: ./infra/bicep/main.bicepparam
+
+    - name: zip binaries
+      run: |
+        cd src
+        zip -r ../my-app.zip .
+
+    - name: Deploy to prod (default) slot
+      uses: azure/webapps-deploy@v3
+      id: deploy-to-webapp
+      with: 
+        app-name: ${{ vars.WEBAPP_NAME }}
+        package: 'my-app.zip'
+         
+    # - uses: azure/arm-deploy@v2
+    #   with:
+    #     resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+    #     template: ./infra/arm/template.json
+    #     parameters: ./infra/arm/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }}=${{ vars.SUBSCRIPTION_ID }}

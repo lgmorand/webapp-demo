@@ -1,0 +1,85 @@
+name: 3- Release to prod
+
+on:
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #   - main
+
+env:
+  WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
+  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
+  SLOT_NAME: staging  # Create a slot on your web app called "staging"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Check out repo
+      uses: actions/checkout@v4
+
+    - name: Install .Net
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '9.0.x'
+
+    - name: Build app
+      run: echo "put build activities here"
+
+    - name: zip binaries
+      run: |
+        cd src
+        zip -r ../my-app.zip .
+
+    - name: Upload artifact for deployment job
+      uses: actions/upload-artifact@v4
+      with:
+        name: my-app
+        path: '${{ github.workspace }}/my-app.zip'
+    
+  deploy-to-stage:
+    name: Deploy to staging
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Staging'
+      url: ${{ steps.deploy-to-stage.outputs.webapp-url }}
+
+    steps:
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Download artifact from build job
+      uses: actions/download-artifact@v4
+      with:
+        name: my-app
+    
+    - name: Deploy to stage env
+      uses: azure/webapps-deploy@v3
+      id: deploy-to-stage
+      with: 
+        app-name: ${{ env.WEBAPP_NAME }}
+        slot-name:  ${{ env.SLOT_NAME }}
+        package: 'my-app.zip'
+        
+
+
+  release-to-prod:
+    name: Release to prod
+    needs: deploy-to-stage
+    runs-on: ubuntu-latest
+    environment:
+      name: 'Production'
+      url: 'https://${{ env.WEBAPP_NAME }}.azurewebsites.net/'
+
+    steps:
+    - name: Log into Azure CLI with service principal
+      uses: azure/login@v2
+      with:
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+    - name: Swap slots
+      run: az webapp deployment slot swap -s ${{ env.SLOT_NAME }} -n ${{ env.WEBAPP_NAME }} -g ${{ env.RESOURCE_GROUP }}
