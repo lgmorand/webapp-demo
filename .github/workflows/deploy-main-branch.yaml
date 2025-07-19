@@ -26,6 +26,11 @@ jobs:
     - name: Build app
       run: echo "put build activities here"
 
+    - name: zip binaries
+      run: |
+        cd /src
+        zip -r ../my-app.zip .
+
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
       with:
