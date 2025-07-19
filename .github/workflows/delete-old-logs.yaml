@@ -13,6 +13,6 @@ jobs:
     steps:
       - uses: igorjs/gh-actions-clean-workflow@v6
         with:
-          runs_older_than: 1 
+          runs_older_than: 0 
           token: ${{ github.token }}
           runs_to_keep: 1
