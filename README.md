@@ -18,8 +18,8 @@ This repo contains a sample Tomcat application and GitHub Actions workflow files
 
 ## Set up the demo
 
-1. Create a Resource Group in Azure and add it in GitHub actions Variables with another variable for the Web App Name
-![GitHub Envs](media/variables.png)
+1. Create a Resource Group in Azure 
+
 2. Create a Service Principal that has Contributor rights on the resource group. [More Info](https://github.com/azure/webapps-deploy#configure-deployment-credentials-1)
 
 ``` code
@@ -33,7 +33,10 @@ Replace the following:
 
 
 3. Create a GitHub Actions secret called `AZURE_CREDENTIALS` with the SP
-   1. **Note**: As of June 2022, there was a breaking change introduced in later versions of the Azure CLI command which generates the SP. Until the `webapps-deploy` action is updated, [you must reformat the SP JSON](https://github.com/Azure/webapps-deploy/issues/220#issuecomment-1054550932).
-5. Replace the placeholders in the `env:` section with your webapp name and resource group name.
-1. Create an Azure Web App [`deploy-infra.yaml`](.github/workflows/deploy-pull-request.yaml)
-2. Create a slot called "staging" on the Azure Web App
+
+4. Create a GitHub action variable called 'RESOURCE_GROUP' with the RG you created above
+
+5. Create an Azure Web App [`deploy-infra.yaml`](.github/workflows/deploy-pull-request.yaml)
+
+4. Set up GitHub actions Variables with another variable for the Web App Name
+![GitHub Envs](media/variables.png)

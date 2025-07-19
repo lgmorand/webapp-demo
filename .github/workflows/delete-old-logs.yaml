@@ -1,6 +1,5 @@
 name: 5- Clean logs
-run-name: Clean runs logs older than a week
-
+run-name: Clean runs logs
 on:
   workflow_dispatch:
   schedule:
