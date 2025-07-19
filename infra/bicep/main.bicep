@@ -5,7 +5,7 @@ param location string = resourceGroup().location // Location for all resources
 param repositoryUrl string = 'https://github.com/Azure-Samples/nodejs-docs-hello-world'
 param branch string = 'main'
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
-var webSiteName = toLower('mywebapp')
+var webSiteName = toLower('mywebapp-${webAppName}')
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
