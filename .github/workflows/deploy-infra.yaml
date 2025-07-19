@@ -27,8 +27,8 @@ jobs:
         template-file: ./infra/bicep/main.bicep
         parameters-file: ./infra/bicep/main.bicepparam
 
-    - uses: azure/arm-deploy@v2
-      with:
-        resourceGroupName: ${{ vars.RESOURCE_GROUP }}
-        template: ./infra/template.json
-        parameters: ./infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }}=${{ vars.SUBSCRIPTION_ID }}
+    # - uses: azure/arm-deploy@v2
+    #   with:
+    #     resourceGroupName: ${{ vars.RESOURCE_GROUP }}
+    #     template: ./infra/arm/template.json
+    #     parameters: ./infra/arm/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }}=${{ vars.SUBSCRIPTION_ID }}

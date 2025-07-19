@@ -5,7 +5,7 @@ param location string = resourceGroup().location // Location for all resources
 param repositoryUrl string = 'https://github.com/Azure-Samples/nodejs-docs-hello-world'
 param branch string = 'main'
 var appServicePlanName = toLower('AppServicePlan-${webAppName}')
-var webSiteName = toLower('wapp-${webAppName}')
+var webSiteName = toLower('mywebapp')
 
 resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
   name: appServicePlanName
@@ -21,6 +21,17 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
 
 resource appService 'Microsoft.Web/sites@2023-12-01' = {
   name: webSiteName
+  location: location
+  properties: {
+    serverFarmId: appServicePlan.id
+    siteConfig: {
+      linuxFxVersion: linuxFxVersion
+    }
+  }
+}
+
+resource stagingSlot 'Microsoft.Web/sites/slots@2023-12-01' = {
+  name: '${webSiteName}/staging'
   location: location
   properties: {
     serverFarmId: appServicePlan.id
