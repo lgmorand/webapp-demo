@@ -15,8 +15,20 @@ jobs:
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+    - name: Deployment
+      uses: azure/bicep-deploy@v2
+      with:
+        type: deployment
+        operation: create
+        name: Development
+        location: westeurope
+        scope: subscription
+        subscription-id: ${{ vars.SUBSCRIPTION_ID }}
+        template-file: ./infra/bicep/main.bicep
+        parameters-file: ./infra/bicep/main.bicepparam
+
     - uses: azure/arm-deploy@v2
       with:
         resourceGroupName: ${{ vars.RESOURCE_GROUP }}
         template: ./infra/template.json
-        parameters: ./infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }} subscriptionId=${{ vars.SUBSCRIPTION_ID }}
+        parameters: ./infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }}=${{ vars.SUBSCRIPTION_ID }}
