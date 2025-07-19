@@ -20,8 +20,7 @@ jobs:
       with:
         type: deployment
         operation: create
-        name: Development
-        location: westeurope
+        name: deploy
         scope: resourceGroup
         subscription-id: ${{ vars.SUBSCRIPTION_ID }}
         resource-group-name: ${{ vars.RESOURCE_GROUP }}
