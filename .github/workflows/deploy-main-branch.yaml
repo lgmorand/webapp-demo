@@ -57,7 +57,7 @@ jobs:
       with: 
         app-name: ${{ env.WEBAPP_NAME }}
         slot-name:  ${{ env.SLOT_NAME }}
-        package: '*.war'
+        package: 'my-app.zip'
 
   release-to-prod:
     name: Release to prod
