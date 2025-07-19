@@ -64,6 +64,8 @@ jobs:
         app-name: ${{ env.WEBAPP_NAME }}
         slot-name:  ${{ env.SLOT_NAME }}
         package: 'my-app.zip'
+        target-path: /home/site/wwwroot/public # necessary for PHP
+
 
   release-to-prod:
     name: Release to prod
