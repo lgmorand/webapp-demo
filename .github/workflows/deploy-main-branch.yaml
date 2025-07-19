@@ -58,7 +58,7 @@ jobs:
         name: my-app
     
     - name: Deploy to stage env
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3
       id: deploy-to-stage
       with: 
         app-name: ${{ env.WEBAPP_NAME }}

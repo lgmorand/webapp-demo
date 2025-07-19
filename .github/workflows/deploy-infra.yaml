@@ -27,6 +27,19 @@ jobs:
         template-file: ./infra/bicep/main.bicep
         parameters-file: ./infra/bicep/main.bicepparam
 
+    - name: zip binaries
+      run: |
+        cd src
+        zip -r ../my-app.zip 
+
+    - name: Deploy to slot on staging site
+      uses: azure/webapps-deploy@v3
+      id: deploy-to-webapp
+      with: 
+        app-name: ${{ env.WEBAPP_NAME }}
+        slot-name:  ${{ env.SLOT_NAME }}
+        package: 'my-app.zip'
+        target-path: /home/site/wwwroot/public # necessary for PHP    
     # - uses: azure/arm-deploy@v2
     #   with:
     #     resourceGroupName: ${{ vars.RESOURCE_GROUP }}

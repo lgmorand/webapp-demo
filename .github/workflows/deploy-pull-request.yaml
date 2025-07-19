@@ -74,7 +74,7 @@ jobs:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Deploy to slot on staging site
-      uses: azure/webapps-deploy@v2
+      uses: azure/webapps-deploy@v3
       id: deploy-to-webapp
       with: 
         app-name: ${{ env.WEBAPP_NAME }}
