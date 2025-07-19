@@ -40,3 +40,5 @@ Replace the following:
 
 4. Set up GitHub actions Variables with another variable for the Web App Name
 ![GitHub Envs](media/variables.png)
+
+ 
