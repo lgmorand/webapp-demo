@@ -18,7 +18,7 @@ jobs:
 
     steps:
     - name: Check out repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
     - name: Install .Net
       uses: actions/setup-dotnet@v4

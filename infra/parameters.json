@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "subscriptionId": {
-            "value": "eccbb47e-a076-42ef-adec-7718612dd629"
+            "value": "d677493f-c5e8-48f1-b230-b3acdb23c4af"
         },
         "resourceGroupName": {
             "value": "rg-test"

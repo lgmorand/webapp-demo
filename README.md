@@ -18,9 +18,22 @@ This repo contains a sample Tomcat application and GitHub Actions workflow files
 
 ## Set up the demo
 
-1. Create an Azure Web App
-2. Create a slot called "staging" on the Azure Web App
-3. Create a Service Principal that has Contributor rights on the Web App. [More Info](https://github.com/azure/webapps-deploy#configure-deployment-credentials-1)
-4. Create a GitHub Actions secret called `AZURE_CREDENTIALS` with the SP
+1. Create a Resource Group in Azure and add it in GitHub actions Variables with another variable for the Web App Name
+![GitHub Envs](media/variables.png)
+2. Create a Service Principal that has Contributor rights on the resource group. [More Info](https://github.com/azure/webapps-deploy#configure-deployment-credentials-1)
+
+``` code
+az ad sp create-for-rbac --name "{sp-name}" --sdk-auth --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/{resource-group}
+```
+Replace the following:
+
+- `{sp-name}` with a suitable name for your service principal, such as the name of the app itself. The name must be unique within your organization.
+- `{subscription-id}` with the subscription you want to use
+- `{resource-group}` the resource group containing the web app.
+
+
+3. Create a GitHub Actions secret called `AZURE_CREDENTIALS` with the SP
    1. **Note**: As of June 2022, there was a breaking change introduced in later versions of the Azure CLI command which generates the SP. Until the `webapps-deploy` action is updated, [you must reformat the SP JSON](https://github.com/Azure/webapps-deploy/issues/220#issuecomment-1054550932).
 5. Replace the placeholders in the `env:` section with your webapp name and resource group name.
+1. Create an Azure Web App [`deploy-infra.yaml`](.github/workflows/deploy-pull-request.yaml)
+2. Create a slot called "staging" on the Azure Web App
