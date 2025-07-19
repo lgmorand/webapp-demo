@@ -1,4 +1,4 @@
-name: Deploy Infra
+name: 1- Deploy Infra
 
 on:
   workflow_dispatch:
@@ -23,6 +23,7 @@ jobs:
         name: Development
         location: westeurope
         scope: resourceGroup
+        subscription-id: ${{ vars.SUBSCRIPTION_ID }}
         resource-group-name: ${{ vars.RESOURCE_GROUP }}
         template-file: ./infra/bicep/main.bicep
         parameters-file: ./infra/bicep/main.bicepparam

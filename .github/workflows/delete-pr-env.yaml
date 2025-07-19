@@ -1,5 +1,5 @@
 
-name: Delete PR env when PR is closed
+name: 4- Delete PR env when PR is closed
 
 on:
   pull_request:
