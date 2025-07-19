@@ -81,10 +81,6 @@ jobs:
         slot-name:  ${{ env.SLOT_NAME }}
         package: 'my-app.zip'
 
-    - name: Setup tmate session
-      if: ${{ failure() }}
-      uses: mxschmitt/action-tmate@v3
-    
     - name: Comment on PR with the preview link
       uses: mshick/add-pr-comment@v2
       with:
@@ -97,4 +93,8 @@ jobs:
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_TOKEN }}
         repo-token-user-login: 'github-actions[bot]'
+
+    - name: Setup tmate session
+      if: ${{ failure() }}
+      uses: mxschmitt/action-tmate@v3
    
