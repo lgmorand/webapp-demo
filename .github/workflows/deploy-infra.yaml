@@ -12,6 +12,6 @@ jobs:
 
     - uses: azure/arm-deploy@v2
       with:
-        resourceGroupName: ${{ env.RESOURCE_GROUP }}
+        resourceGroupName: ${{ vars.RESOURCE_GROUP }}
         template: ./infra/template.json
-        parameters: infra/parameters.json resourceGroupName=${{ env.RESOURCE_GROUP }} name=${{ env.WEBAPP_NAME }} subscriptionId=${{ env.SUBSCRIPTION_ID }}
+        parameters: infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }} subscriptionId=${{ vars.SUBSCRIPTION_ID }}
