@@ -28,7 +28,7 @@ jobs:
 
     - name: zip binaries
       run: |
-        cd /src
+        cd src
         zip -r ../my-app.zip .
 
     - name: Upload artifact for deployment job
