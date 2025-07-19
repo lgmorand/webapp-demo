@@ -92,7 +92,6 @@ jobs:
 
           > *This is an automated message.*
         repo-token: ${{ secrets.GITHUB_TOKEN }}
-        repo-token-user-login: 'github-actions[bot]'
 
     - name: Setup tmate session
       if: ${{ failure() }}
