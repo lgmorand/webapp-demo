@@ -8,8 +8,8 @@ on:
 concurrency: ci-${{ github.event.number }}
 
 env:
-  WEBAPP_NAME: ${{ env.WEBAPP_NAME }}
-  RESOURCE_GROUP: ${{ env.RESOURCE_GROUP }}
+  WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
+  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
   SLOT_NAME: pr-${{ github.event.number }}
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         dotnet-version: '9.0.x'
 
     - name: Build app
-      run: mvn clean package
+      run: echo "put build activities here"
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
@@ -40,7 +40,7 @@ jobs:
 
     steps:
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -61,15 +61,15 @@ jobs:
     - name: Download artifact from build job
       uses: actions/download-artifact@v4
       with:
-        name: java-app
+        name: my-app
 
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
     
     - name: Deploy to slot on staging site
-      uses: azure/webapps-deploy@v1
+      uses: azure/webapps-deploy@v2
       id: deploy-to-webapp
       with: 
         app-name: ${{ env.WEBAPP_NAME }}
@@ -77,7 +77,7 @@ jobs:
         package: '*.war'
     
     - name: Comment on PR with the preview link
-      uses: mshick/add-pr-comment@v1
+      uses: mshick/add-pr-comment@v2
       with:
         message: |
           ## Preview link: https://${{ env.WEBAPP_NAME }}-${{env.SLOT_NAME }}.azurewebsites.net 

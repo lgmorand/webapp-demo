@@ -6,8 +6,8 @@ on:
     - main
 
 env:
-  WEBAPP_NAME: replace-with-your-webapp-name
-  RESOURCE_GROUP: replace-with-your-rg-name
+  WEBAPP_NAME: ${{ vars.WEBAPP_NAME }}
+  RESOURCE_GROUP: ${{ vars.RESOURCE_GROUP }}
   SLOT_NAME: staging  # Create a slot on your web app called "staging"
 
 jobs:
@@ -16,22 +16,21 @@ jobs:
 
     steps:
     - name: Check out repo
-      uses: actions/checkout@v1
+      uses: actions/checkout@v4
 
-    - name: Set up Java 11
-      uses: actions/setup-java@v3
+    - name: Install .Net
+      uses: actions/setup-dotnet@v4
       with:
-        java-version: 11
-        distribution: microsoft
+        dotnet-version: '9.0.x'
 
     - name: Build app
-      run: mvn clean package
+      run: echo "put build activities here"
 
     - name: Upload artifact for deployment job
       uses: actions/upload-artifact@v4
       with:
-        name: java-app
-        path: '${{ github.workspace }}/target/*.war'
+        name: my-app
+        path: '${{ github.workspace }}/src/*'
     
   deploy-to-stage:
     name: Deploy to staging
@@ -43,17 +42,17 @@ jobs:
 
     steps:
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
     - name: Download artifact from build job
       uses: actions/download-artifact@v4
       with:
-        name: java-app
+        name: my-app
     
     - name: Deploy to stage env
-      uses: azure/webapps-deploy@v1
+      uses: azure/webapps-deploy@v2
       id: deploy-to-stage
       with: 
         app-name: ${{ env.WEBAPP_NAME }}
@@ -70,7 +69,7 @@ jobs:
 
     steps:
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 

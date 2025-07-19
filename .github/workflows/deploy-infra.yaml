@@ -11,7 +11,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Log into Azure CLI with service principal
-      uses: azure/login@v1.1
+      uses: azure/login@v2
       with:
         creds: ${{ secrets.AZURE_CREDENTIALS }}
 
@@ -19,4 +19,4 @@ jobs:
       with:
         resourceGroupName: ${{ vars.RESOURCE_GROUP }}
         template: ./infra/template.json
-        parameters: infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }} subscriptionId=${{ vars.SUBSCRIPTION_ID }}
+        parameters: ./infra/parameters.json resourceGroupName=${{ vars.RESOURCE_GROUP }} name=${{ vars.WEBAPP_NAME }} subscriptionId=${{ vars.SUBSCRIPTION_ID }}
