@@ -22,8 +22,8 @@ jobs:
         operation: create
         name: Development
         location: westeurope
-        scope: subscription
-        subscription-id: ${{ vars.SUBSCRIPTION_ID }}
+        scope: resourceGroup
+        resource-group-name: ${{ vars.RESOURCE_GROUP }}
         template-file: ./infra/bicep/main.bicep
         parameters-file: ./infra/bicep/main.bicepparam
 
