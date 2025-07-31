@@ -6,7 +6,7 @@ param location string = resourceGroup().location // Location for all resources
 var appServicePlanName = toLower('AppServicePlan-${appName}')
 var webSiteName = toLower('mywebapp-${appName}')
 var keyVaultName = toLower('kv-${appName}')
-var storageAccountName = toLower('${appName}')
+var storageAccountName = toLower('sto${appName}')
 var fileShareName = 'recipes'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
