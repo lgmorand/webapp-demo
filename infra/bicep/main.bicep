@@ -1,14 +1,12 @@
-param webAppName string = uniqueString(resourceGroup().id) // Generate a unique string for the web app name
+param appName string = uniqueString(resourceGroup().id) // Generate a unique string for the web app name
 param sku string = 'P0v3' // Tier of the App Service plan
 param linuxFxVersion string = 'PHP|8.4' // Runtime stack of the web app
 param location string = resourceGroup().location // Location for all resources
-param storageAccountNamePrefix string // Prefix for the storage account name
-param keyVaultNamePrefix string // Prefix for the Key Vault name
 
-var appServicePlanName = toLower('AppServicePlan-${webAppName}')
-var webSiteName = toLower('mywebapp-${webAppName}')
-var keyVaultName = toLower('${keyVaultNamePrefix}${uniqueString(resourceGroup().id)}')
-var storageAccountName = toLower('${storageAccountNamePrefix}${uniqueString(resourceGroup().id)}')
+var appServicePlanName = toLower('AppServicePlan-${appName}')
+var webSiteName = toLower('mywebapp-${appName}')
+var keyVaultName = toLower('kv-${appName}')
+var storageAccountName = toLower('${appName}')
 var fileShareName = 'recipes'
 
 resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
