@@ -68,6 +68,9 @@ resource appServicePlan 'Microsoft.Web/serverfarms@2023-12-01' = {
 resource appService 'Microsoft.Web/sites@2023-12-01' = {
   name: webSiteName
   location: location
+  identity: {
+    type: 'SystemAssigned'  
+  }
   properties: {
     serverFarmId: appServicePlan.id
     siteConfig: {
@@ -78,7 +81,7 @@ resource appService 'Microsoft.Web/sites@2023-12-01' = {
           accountName: storageAccount.name
           shareName: fileShareName
           accessKey: storageAccount.listKeys().keys[0].value
-          mountPath: '/wwwroot/wwwroot/uploads/recipes'
+          mountPath: '/home/site/wwwroot/wwwroot/uploads/recipes' // path need to be checked using Kudu
         }
       }
     }
@@ -94,5 +97,17 @@ resource stagingSlot 'Microsoft.Web/sites/slots@2023-12-01' = {
     siteConfig: {
       linuxFxVersion: linuxFxVersion
     }
+  }
+}
+
+
+// Attribution du rôle Key Vault Secrets User à l'identité managée système de la Web App
+resource keyVaultSecretsUserRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' = {
+  name: guid(keyVault.id, appService.id, 'Key Vault Secrets User')
+  scope: keyVault
+  properties: {
+    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', '4633458b-17de-408a-b874-0445c86b69e6') // Key Vault Secrets User
+    principalId: appService.identity.principalId  // Principal ID de l'identité système de la Web App
+    principalType: 'ServicePrincipal'
   }
 }
