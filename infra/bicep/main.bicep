@@ -5,7 +5,7 @@ param location string = resourceGroup().location // Location for all resources
 
 var appServicePlanName = toLower('AppServicePlan-${appName}')
 var webSiteName = toLower('mywebapp-${appName}')
-var keyVaultName = toLower('kv-${appName}')
+var keyVaultName = toLower('kva-${appName}')
 var storageAccountName = toLower('sto${appName}')
 var fileShareName = 'recipes'
 
@@ -24,7 +24,7 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     enabledForDiskEncryption: false
     enableSoftDelete: true
     softDeleteRetentionInDays: 90
-    enablePurgeProtection: true
+    enablePurgeProtection: false
     publicNetworkAccess: 'Enabled'
     networkAcls: {
       defaultAction: 'Allow'
