@@ -24,7 +24,6 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
     enabledForDiskEncryption: false
     enableSoftDelete: true
     softDeleteRetentionInDays: 90
-    enablePurgeProtection: false
     publicNetworkAccess: 'Enabled'
     networkAcls: {
       defaultAction: 'Allow'
