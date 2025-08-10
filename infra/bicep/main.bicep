@@ -33,6 +33,13 @@ resource keyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
   }
 }
 
+resource secret 'Microsoft.KeyVault/vaults/secrets@2022-07-01' = {
+  name: '${keyVault.name}/mySecret'
+  properties: {
+    value: 'blabla'
+  }
+}
+
 resource storageAccount 'Microsoft.Storage/storageAccounts@2023-01-01' = {
   name: storageAccountName
   location: location
@@ -84,6 +91,12 @@ resource appService 'Microsoft.Web/sites@2023-12-01' = {
           mountPath: '/home/site/wwwroot/wwwroot/uploads/recipes' // path need to be checked using Kudu
         }
       }
+      appSettings: [
+        {
+          name: 'MY_SECRET'
+          value: '@Microsoft.KeyVault(SecretUri=${secret.properties.secretUriWithVersion})'
+        }
+      ]
     }
   }
 }
